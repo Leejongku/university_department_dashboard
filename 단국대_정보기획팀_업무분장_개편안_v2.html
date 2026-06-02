@@ -12,7 +12,6 @@
   --plan:#7c3aed;--plan-lt:#ede9fe;--plan-bd:#c4b5fd;
   --dev:#0369a1;--dev-lt:#e0f2fe;--dev-bd:#7dd3fc;
   --ops:#b45309;--ops-lt:#fef3c7;--ops-bd:#fcd34d;
-  --infra:#047857;--infra-lt:#d1fae5;--infra-bd:#6ee7b7;
   --ai:#9d174d;--ai-lt:#fce7f3;--ai-bd:#f9a8d4;
   --warn:#dc2626;--warn-lt:#fee2e2;
   --ok:#16a34a;--ok-lt:#dcfce7;
@@ -78,8 +77,8 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .ob-root{background:var(--dku-dk);color:#fff;border:2px solid var(--dku-md);min-width:180px;}
 /* 3팀 */
 .ob-plan{background:var(--plan-lt);border:2px solid var(--plan-bd);color:var(--plan);min-width:150px;}
-.ob-infra1{background:var(--infra-lt);border:2px solid var(--infra-bd);color:var(--infra);min-width:150px;}
-.ob-infra2{background:var(--infra-lt);border:2px solid var(--infra-bd);color:var(--infra);min-width:150px;opacity:.85;}
+
+
 .connector-v{width:2px;height:18px;background:var(--border2);margin:0 auto;}
 .connector-h{height:2px;background:var(--border2);flex:1;margin-top:10px;}
 .connector-row{display:flex;max-width:600px;margin:0 auto;align-items:flex-start;padding:0 80px;}
@@ -108,20 +107,20 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .rr-plan{background:var(--plan-lt);border:1.5px solid var(--plan-bd);}
 .rr-dev {background:var(--dev-lt); border:1.5px solid var(--dev-bd);}
 .rr-ops {background:var(--ops-lt); border:1.5px solid var(--ops-bd);}
-.rr-infra{background:var(--infra-lt);border:1.5px solid var(--infra-bd);}
+
 .rr-ai  {background:var(--ai-lt);  border:1.5px solid var(--ai-bd);}
 .role-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px;}
 .role-title{font-size:13px;font-weight:800;}
 .rt-plan{color:var(--plan);}
 .rt-dev {color:var(--dev);}
 .rt-ops {color:var(--ops);}
-.rt-infra{color:var(--infra);}
+
 .rt-ai  {color:var(--ai);}
 .role-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;color:#fff;white-space:nowrap;flex-shrink:0;}
 .rb-plan{background:var(--plan);}
 .rb-dev {background:var(--dev);}
 .rb-ops {background:var(--ops);}
-.rb-infra{background:var(--infra);}
+
 .rb-ai  {background:var(--ai);}
 .role-meta{font-size:11px;color:var(--muted);margin-bottom:8px;}
 .task-ul{list-style:none;display:flex;flex-direction:column;gap:3px;}
@@ -132,12 +131,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .newtag{font-size:9px;font-weight:700;background:var(--dku-lt);color:var(--dku);
   padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle;}
 
-/* 인프라팀 카드 */
-.infra-full{background:var(--infra-lt);border:1.5px solid var(--infra-bd);border-radius:10px;padding:15px 17px;margin-bottom:12px;}
-.infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
-.infra-sub{background:#fff;border:1px solid var(--infra-bd);border-radius:8px;padding:12px 14px;}
-.infra-sub-title{font-size:12px;font-weight:800;color:var(--infra);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
-.campus-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;background:var(--infra);color:#fff;}
+
 
 /* 비교 테이블 */
 .tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
@@ -182,304 +176,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
     <div class="cs"><div class="n">11</div><div class="l">현재 인원</div></div>
     <div class="cs"><div class="n">12</div><div class="l">비교 대학</div></div>
     <div class="cs"><div class="n">0</div><div class="l">현재 기획 인원</div></div>
-    <div class="cs"><div class="n">5</div><div class="l">제안 업무 파트</div></div>
+    <div class="cs"><div class="n">4</div><div class="l">제안 업무 파트</div></div>
   </div>
 </div>
 
 <!-- 01. 실제 조직 구조 -->
 <div class="sec">
-  <div class="sec-title">01 · 단국대 정보기획팀 현황</div>
-  <div class="card">
-    <div class="org-wrap">
-      <div class="org-top-row">
-        <div class="ob ob-root">
-          <div class="ot">디지털정보원</div>
-          <div class="os">죽전 + 천안 2캠퍼스</div>
-        </div>
-      </div>
-      <div class="connector-v"></div>
-      <div class="org-top-row" style="margin-top:0;">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-          <div class="connector-v"></div>
-          <div class="ob ob-plan">
-            <div class="ot">정보기획팀</div>
-            <div class="os">시스템 개발·운영·기획·행정</div>
-            <div class="on">11명 (공통 계약직 1명 포함)</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="insight fix" style="margin-top:4px;">
-      <div class="insight-ico">📌</div>
-      <div>
-        <div class="insight-title">정보기획팀의 '공통 2명' 재해석</div>
-        <div class="insight-text">초안에서는 공통 2명을 인프라 역할로 지정하려 했으나, 인프라1·2팀이 이미 존재하므로 이는 잘못된 접근이었습니다. 공통 2명의 실제 역할을 <strong>포털·그룹웨어·공통 솔루션 운영 + 헬프데스크 연계</strong>로 명시하는 방향이 맞습니다.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 02. 현황 진단 재정의 -->
-<div class="sec">
-  <div class="sec-title">02 · 현황 진단 — 정보기획팀 11명의 실제 공백</div>
-
-  <div class="insight warn">
-    <div class="insight-ico">⚠️</div>
-    <div>
-      <div class="insight-title">여전히 남아있는 핵심 공백 : 기획 인원 0명</div>
-      <div class="insight-text">인프라는 인프라1·2팀이 담당하므로 문제가 없습니다. 그러나 <strong>정보화 전략 기획·사업 예산 기획·데이터 거버넌스·AI 도입 계획</strong> 등 전략적 기능은 여전히 11명 어느 누구의 공식 업무에도 없습니다. 12개 비교 대학 중 기획 인원이 0명인 곳은 단국대가 유일합니다.</div>
-    </div>
-  </div>
-
-  <div class="insight warn">
-    <div class="insight-ico">⚠️</div>
-    <div>
-      <div class="insight-title">정보기획팀 ↔ 인프라1·2팀 간 협업 경계 불명확</div>
-      <div class="insight-text">시스템 개발·운영은 정보기획팀, 서버·네트워크·보안은 인프라팀으로 역할이 구분되어 있지만, <strong>WAS/서버 설정 변경, 정보보안 관련 개발 요건, 개인정보 처리 시스템 접근 권한</strong> 등 경계 업무의 협업 프로세스가 명문화되어 있지 않을 가능성이 높습니다. 동국대·인하대 등은 이 연계 프로세스를 명시적으로 정의하고 있습니다.</div>
-    </div>
-  </div>
-
-  </div>
-  </div>
-
-  <!-- 비교표 -->
-  <div class="card">
-    <div style="font-size:13px;font-weight:700;margin-bottom:12px;">캠퍼스 분리 운영 대학 비교</div>
-    <table class="tbl">
-      <thead><tr><th>대학</th><th>총원</th><th>캠퍼스</th><th>인프라 구성</th><th>기획 인원</th><th>기획 공백 여부</th></tr></thead>
-      <tbody>
-        <tr class="dku-row">
-          <td>단국대</td><td>11+α</td><td>죽전·천안</td>
-          <td>정보기획팀 단일 (인프라 별도)</td>
-          <td><span class="chip c-red">0명</span></td>
-          <td><span class="chip c-red">공백</span></td>
-        </tr>
-        <tr>
-          <td>성균관대</td><td>35</td><td>서울·수원</td>
-          <td>정보통신팀(서울) 9명 + 정보통신팀(수원) 26명</td>
-          <td><span class="chip c-ok">0→기획겸직</span></td>
-          <td><span class="chip c-ok">수원팀 기획 겸직</span></td>
-        </tr>
-        <tr>
-          <td>홍익대</td><td>18</td><td>서울·세종</td>
-          <td>정보전산팀(서울) 13명 + 전산관리팀(세종) 5명</td>
-          <td><span class="chip c-ops">전략수립 겸직</span></td>
-          <td><span class="chip c-ops">인프라 내 기획 겸직</span></td>
-        </tr>
-        <tr>
-          <td>경희대</td><td>14</td><td>서울·수원</td>
-          <td>정보기획팀(서울) + 국제캠퍼스 별도 2팀</td>
-          <td><span class="chip c-ok">팀장 겸직</span></td>
-          <td><span class="chip c-ok">총괄이 기획 수행</span></td>
-        </tr>
-        <tr>
-          <td>중앙대</td><td>14</td><td>서울·안성</td>
-          <td>정보인프라팀(서울·안성 겸담)</td>
-          <td><span class="chip c-ok">팀장 겸직</span></td>
-          <td><span class="chip c-ok">총괄이 기획 수행</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- 03. 제안 업무분장 -->
-<div class="sec">
-  <div class="sec-title">03 · 정보기획팀 11명 — 제안 업무분장 (5개 역할 파트)</div>
-
-  <div class="insight info">
-    <div class="insight-ico">💡</div>
-    <div>
-      <div class="insight-title">설계 원칙 — 인프라팀과 역할 경계를 명확히 하면서 기획 기능 복원</div>
-      <div class="insight-text">인프라1·2팀이 서버·네트워크·보안을 전담하므로, 정보기획팀 11명은 <strong>① 기획·전략, ② 학사시스템, ③ 행정·연구시스템, ④ 공통·포털, ⑤ AI·데이터(중기)</strong> 5개 역할에 집중할 수 있습니다. 팀 내 인프라 역할을 제거하고 비워진 자리에 기획 기능을 채우는 구조입니다.</div>
-    </div>
-  </div>
-
-  <div class="role-grid">
-    <div class="role-card rr-plan">
-      <div class="role-hdr">
-        <div class="role-title rt-plan">📋 기획·전략 파트</div>
-        <span class="role-badge rb-plan">1명 (팀장 겸직)</span>
-      </div>
-      <div class="role-meta">현재 총괄 1명 → 기획 역할 공식 부여</div>
-      <ul class="task-ul">
-        <li>정보화 중장기 발전계획 수립 및 관리</li>
-        <li>연도별 정보화 사업 예산 기획·성과 관리</li>
-        <li>대학 정보화위원회 운영 지원</li>
-        <li class="new">디지털전환(DX) 추진 로드맵 수립<span class="newtag">신규</span></li>
-        <li class="new">AI·데이터 도입 전략 검토<span class="newtag">신규</span></li>
-        <li>인프라1·2팀 협업 요건 정의·조율</li>
-        <li>고등교육통계·정보공시 총괄</li>
-      </ul>
-    </div>
-
-    <div class="role-card rr-dev">
-      <div class="role-hdr">
-        <div class="role-title rt-dev">🎓 학사시스템 파트</div>
-        <span class="role-badge rb-dev">4명 (현 학사)</span>
-      </div>
-      <div class="role-meta">현재 학사 4명 → 시스템별 주담당 명시화</div>
-      <ul class="task-ul">
-        <li>학사정보시스템 개발·운영 (학적·수업·성적·졸업)</li>
-        <li>수강신청 시스템 운영·장애 대응</li>
-        <li>LMS / 이러닝 연계 운영</li>
-        <li>포털·SSO·모바일 앱 운영·개선</li>
-        <li class="new">스마트캠퍼스 앱 고도화 기획·개발<span class="newtag">신규</span></li>
-        <li class="new">시스템 연계(API) 관리<span class="newtag">신규</span></li>
-        <li>WAS 요건 정의 → 인프라팀 협업</li>
-      </ul>
-    </div>
-
-    <div class="role-card rr-ops">
-      <div class="role-hdr">
-        <div class="role-title rt-ops">📁 행정·연구 시스템 파트</div>
-        <span class="role-badge rb-ops">4명 (행정2+연구2)</span>
-      </div>
-      <div class="role-meta">현재 행정2+연구2 → 파트 통합·DBA 명시</div>
-      <ul class="task-ul">
-        <li>행정정보시스템 운영 (인사·급여·예산·회계·구매·자산)</li>
-        <li>전자결재·그룹웨어 운영 관리</li>
-        <li>입학정보시스템 운영</li>
-        <li>연구정보시스템 개발·운영 (연구비·업적·산학)</li>
-        <li class="new">DBA 역할 공식 지정<span class="newtag">신규</span></li>
-        <li class="new">데이터 품질 관리·통계 산출<span class="newtag">신규</span></li>
-        <li>부서 예산·서무</li>
-      </ul>
-    </div>
-
-    <div class="role-card" style="background:#f0fdf4;border:1.5px solid #86efac;">
-      <div class="role-hdr">
-        <div class="role-title" style="color:#166534;">🌐 공통·포털 파트</div>
-        <span class="role-badge" style="background:#166534;">2명 (현 공통)</span>
-      </div>
-      <div class="role-meta">현재 공통 2명 → 포털·공통솔루션 역할 재정의</div>
-      <ul class="task-ul">
-        <li>통합포털·홈페이지 운영 및 개선</li>
-        <li>그룹웨어·협업툴·메일 시스템 운영</li>
-        <li>공용 소프트웨어·라이선스 관리</li>
-        <li>IT 헬프데스크 운영 (인프라팀 연계)</li>
-        <li class="new">모바일 서비스 UX 개선 지원<span class="newtag">신규</span></li>
-        <li class="new">CMS·웹접근성 관리<span class="newtag">신규</span></li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- AI 파트 별도 -->
-  <div class="role-card rr-ai">
-    <div class="role-hdr">
-      <div class="role-title rt-ai">✦ AI·데이터 파트 — 단계적 도입 권고</div>
-      <span class="role-badge rb-ai">단기: 기획 겸직 → 중기: 전담 1명 확보 목표</span>
-    </div>
-    <div class="role-meta">현재: 없음 / 벤치마킹 근거: 고려대 AI플랫폼 전략팀, 인하대 AI서비스팀, 세종대 데이터혁신과</div>
-    <ul class="task-ul" style="columns:2;gap:20px;">
-      <li class="new">AI 챗봇·서비스 기획 및 도입 검토<span class="newtag">신규</span></li>
-      <li class="new">데이터기반 행정 플랫폼 구축 계획<span class="newtag">신규</span></li>
-      <li class="new">고등교육통계·CQI 데이터 자동화<span class="newtag">신규</span></li>
-      <li class="new">전담 인력 1명 확보 (중기 인력계획 반영)<span class="newtag">중기</span></li>
-    </ul>
-  </div>
-</div>
-
-<!-- 04. 인프라팀과의 협업 경계 정의 -->
-<div class="sec">
-  <div class="sec-title">04 · 정보기획팀 ↔ 인프라팀 협업 경계 정의</div>
-
-  <div class="infra-full">
-    <div style="font-size:13px;font-weight:800;color:var(--infra);margin-bottom:4px;">🔧 인프라팀 (죽전·천안) — 담당 영역 명확화</div>
-    <div style="font-size:12px;color:#374151;margin-bottom:10px;">타대학 인프라팀 업무 분석 기반으로 아래와 같이 역할을 명문화할 것을 권고합니다.</div>
-    <div class="infra-grid">
-      <div class="infra-sub">
-        <div class="infra-sub-title">인프라팀 <span class="campus-badge">죽전</span></div>
-        <ul class="task-ul">
-          <li>서버·스토리지·가상화 운영 (죽전)</li>
-          <li>유무선 네트워크 운영·장애 대응</li>
-          <li>정보보안·ISMS 관리</li>
-          <li>개인정보보호 기술적 보호조치</li>
-          <li>EPKI 인증서 발급·관리</li>
-          <li>PC·공용SW 자원 관리</li>
-          <li>IT 헬프데스크 1차 대응 (죽전)</li>
-          <li>사이버보안진단의 날 운영</li>
-        </ul>
-      </div>
-      <div class="infra-sub">
-        <div class="infra-sub-title">인프라팀 <span class="campus-badge">천안</span></div>
-        <ul class="task-ul">
-          <li>서버·스토리지·가상화 운영 (천안)</li>
-          <li>유무선 네트워크 운영·장애 대응</li>
-          <li>정보보안 현장 대응 (천안)</li>
-          <li>개인정보보호 현장 관리</li>
-          <li>PC·공용SW 자원 관리 (천안)</li>
-          <li>IT 헬프데스크 1차 대응 (천안)</li>
-          <li>통신망·전화 시스템 관리</li>
-          <li>전산실습실 운영</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div style="font-size:13px;font-weight:700;margin-bottom:12px;">경계 업무 협업 프로세스 정의 (필수 명문화)</div>
-    <table class="matrix">
-      <thead>
-        <tr>
-          <th>업무 항목</th>
-          <th>주담당</th>
-          <th>협업 방식</th>
-          <th>현재 문제</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>WAS·미들웨어 설정 변경</td>
-          <td><span class="chip c-infra">인프라팀</span></td>
-          <td>정보기획팀 → 요건 정의 → 인프라팀 적용</td>
-          <td><span class="chip c-red">프로세스 미정의</span></td>
-        </tr>
-        <tr>
-          <td>개인정보처리시스템 접근 권한</td>
-          <td><span class="chip c-infra">인프라팀</span></td>
-          <td>정보기획팀 → 신청 → 인프라팀 승인·적용</td>
-          <td><span class="chip c-red">프로세스 미정의</span></td>
-        </tr>
-        <tr>
-          <td>신규 시스템 서버 도입</td>
-          <td><span class="chip c-both">공동</span></td>
-          <td>기획팀 요건 정의 + 인프라팀 사양 검토 → 공동 구매</td>
-          <td><span class="chip c-red">역할 불명확</span></td>
-        </tr>
-        <tr>
-          <td>정보보안 취약점 조치</td>
-          <td><span class="chip c-infra">인프라팀</span></td>
-          <td>인프라팀 탐지 → 기획팀 개발 조치 → 인프라팀 검증</td>
-          <td><span class="chip c-red">역할 불명확</span></td>
-        </tr>
-        <tr>
-          <td>시스템 장애 대응</td>
-          <td><span class="chip c-both">공동</span></td>
-          <td>1차(인프라팀) → 애플리케이션(기획팀) → 협업 복구</td>
-          <td><span class="chip c-red">에스컬레이션 미정의</span></td>
-        </tr>
-        <tr>
-          <td>SSL 인증서·도메인 관리</td>
-          <td><span class="chip c-infra">인프라팀</span></td>
-          <td>기획팀 신규 서비스 → 인프라팀 인증서 발급</td>
-          <td><span class="chip c-ok">비교적 명확</span></td>
-        </tr>
-        <tr>
-          <td>모바일 앱 푸시·서버 연동</td>
-          <td><span class="chip c-plan">기획팀</span></td>
-          <td>기획팀 개발 + 인프라팀 서버 환경 제공</td>
-          <td><span class="chip c-red">역할 불명확</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- 05. 실행 우선순위 -->
-<div class="sec">
-  <div class="sec-title">05 · 실행 우선순위 — 수정판</div>
+  <div class="sec-title">04 · 실행 우선순위 — 수정판</div>
 
   <div class="pri-item">
     <div class="pri-num n1">1</div>
@@ -500,7 +203,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
   </div>
 
   <div class="pri-item">
-    <div class="pri-num n3">3</div>
+    <div class="pri-num n2">2</div>
     <div>
       <div class="pri-title">공통 2명 업무 재정의 — 포털·공통솔루션·헬프데스크 연계 (단기)</div>
       <div class="pri-desc">'공통'이라는 모호한 분류에서 벗어나 포털·그룹웨어·공용SW·홈페이지·헬프데스크 1차 대응으로 역할을 구체화합니다. 인프라팀과 헬프데스크 에스컬레이션 기준을 함께 정의해야 효율적입니다.</div>
@@ -509,7 +212,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
   </div>
 
   <div class="pri-item">
-    <div class="pri-num n4">4</div>
+    <div class="pri-num n3">3</div>
     <div>
       <div class="pri-title">학사 4명 시스템별 주담당 지정 + DBA 역할 명시 (단기~중기)</div>
       <div class="pri-desc">학사/수강신청/포털/모바일로 주담당 시스템을 분리하고, 행정·연구 파트에서 DBA 역할을 공식 지정합니다. 건국대·동국대·인하대 모두 DBA를 명시적으로 지정하고 있으며, 이는 데이터 품질 사고 예방의 핵심 역할입니다.</div>
@@ -518,7 +221,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
   </div>
 
   <div class="pri-item">
-    <div class="pri-num n5">5</div>
+    <div class="pri-num n4">4</div>
     <div>
       <div class="pri-title">AI·데이터 담당 신설 — 중기 인력 계획 반영 (2~3년)</div>
       <div class="pri-desc">고려대(디지털전략팀 AI플랫폼 전략수립·데이터사이언티스트 2명), 인하대(IT서비스팀 AI 서비스 개발·운영 전담), 세종대(데이터혁신과 신설)를 참고하여 중기 전담 인력 1명 확보를 계획합니다. 단기적으로는 기획 겸직으로 운영하면서 ChatKHU(경희대), 고려대 AI챗봇 등 타대학 사례를 벤치마킹합니다.</div>
@@ -529,16 +232,16 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 
 <!-- 06. 벤치마킹 -->
 <div class="sec">
-  <div class="sec-title">06 · 핵심 벤치마킹 참고</div>
+  <div class="sec-title">05 · 핵심 벤치마킹 참고</div>
   <div class="card">
     <table class="tbl">
       <thead><tr><th>대학 / 팀</th><th>참고 내용</th><th>단국대 적용 포인트</th></tr></thead>
       <tbody>
         <tr><td><strong>고려대</strong> 디지털전략팀</td><td>AI플랫폼 전략수립, 데이터사이언티스트 2명 전담</td><td>중기 AI·데이터 파트 설계 참고</td></tr>
         <tr><td><strong>인하대</strong> IT서비스팀</td><td>AI 서비스 개발·운영 전담, IT개발팀과 인프라팀 협업 프로세스 명시</td><td>기획팀↔인프라팀 협업 SLA 설계 참고</td></tr>
-        <tr><td><strong>동국대</strong> 정보운영+인프라팀</td><td>10명 소규모, 개발팀·인프라팀 간 WAS·장애 에스컬레이션 명시</td><td>경계 업무 프로세스 문서화 참고</td></tr>
+        
         <tr><td><strong>세종대</strong> 데이터혁신과</td><td>10명 규모에서 데이터혁신과 신설, 총괄이 기획 겸직</td><td>소규모 팀의 기획·데이터 기능 복원 사례</td></tr>
-        <tr><td><strong>홍익대</strong> 전산관리팀(세종)</td><td>5명 소규모로 캠퍼스 인프라 전담, 서울팀과 업무 경계 명확</td><td>죽전·천안 인프라팀 역할 분담 참고</td></tr>
+        
         <tr><td><strong>건국대</strong> 정보인프라팀</td><td>DBA·ISMS 역할 명시, IT콜센터 운영팀과 인프라팀 에스컬레이션 정의</td><td>DBA 공식화 및 헬프데스크 연계 참고</td></tr>
       </tbody>
     </table>
@@ -548,7 +251,6 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 <div class="note">
   <strong style="color:var(--text);">분석 기준 안내</strong><br>
   · 2026년 타 대학 전산팀 운영 현황 데이터(12개 대학, 261명, 551개 업무항목) 기반으로 작성되었습니다.<br>
-  · 단국대 인프라1·2팀의 실제 인원 수는 수집 데이터에 포함되어 있지 않아 정성 분석에만 반영하였습니다.<br>
   · 제안된 파트 구분은 정식 팀 신설이 아닌 역할 명확화(Role Definition) 수준이며, 정보기획팀 내 11명 현행 유지 기준입니다.
 </div>
 
