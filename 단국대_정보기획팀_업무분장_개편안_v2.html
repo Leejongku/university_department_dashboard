@@ -177,22 +177,18 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 <div class="cover">
   <div class="cover-badge">2026 타대학 벤치마킹 · 수정판</div>
   <h1>단국대 디지털정보원 — 정보기획팀 업무분장 개편 제안</h1>
-  <div class="sub">실제 조직 구조 반영 : 정보기획팀 + 인프라1팀(죽전) + 인프라2팀(천안)</div>
-  <div class="cover-alert">
-    <strong>⚠️ 초안 수정 사항</strong> — 인프라1·2팀이 죽전·천안에 이미 별도 존재함을 반영하여 분석 전면 재작성.
-    정보기획팀의 공통 2명은 인프라 역할이 아닌 <strong>기획·공통 업무 담당</strong>으로 재해석.
-  </div>
+  <div class="sub">12개 대학 타대학 벤치마킹 기반 · 인원 증원 없는 역할 재정의 제안</div>
   <div class="cover-stats">
-    <div class="cs"><div class="n">3</div><div class="l">산하 팀</div></div>
-    <div class="cs"><div class="n">11</div><div class="l">정보기획팀</div></div>
-    <div class="cs"><div class="n">2</div><div class="l">인프라팀 수</div></div>
+    <div class="cs"><div class="n">11</div><div class="l">현재 인원</div></div>
     <div class="cs"><div class="n">12</div><div class="l">비교 대학</div></div>
+    <div class="cs"><div class="n">0</div><div class="l">현재 기획 인원</div></div>
+    <div class="cs"><div class="n">5</div><div class="l">제안 업무 파트</div></div>
   </div>
 </div>
 
 <!-- 01. 실제 조직 구조 -->
 <div class="sec">
-  <div class="sec-title">01 · 단국대 디지털정보원 실제 조직 구조</div>
+  <div class="sec-title">01 · 단국대 정보기획팀 현황</div>
   <div class="card">
     <div class="org-wrap">
       <div class="org-top-row">
@@ -202,33 +198,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
         </div>
       </div>
       <div class="connector-v"></div>
-      <div class="connector-row">
-        <div class="connector-h"></div>
-        <div class="connector-h"></div>
-      </div>
-      <div class="org-top-row" style="margin-top:0;gap:16px;">
+      <div class="org-top-row" style="margin-top:0;">
         <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
           <div class="connector-v"></div>
           <div class="ob ob-plan">
             <div class="ot">정보기획팀</div>
             <div class="os">시스템 개발·운영·기획·행정</div>
             <div class="on">11명 (공통 계약직 1명 포함)</div>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-          <div class="connector-v"></div>
-          <div class="ob ob-infra1">
-            <div class="ot">인프라1팀 (죽전)</div>
-            <div class="os">서버·네트워크·보안</div>
-            <div class="on">별도 운영</div>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-          <div class="connector-v"></div>
-          <div class="ob ob-infra2">
-            <div class="ot">인프라2팀 (천안)</div>
-            <div class="os">서버·네트워크·보안</div>
-            <div class="on">별도 운영</div>
           </div>
         </div>
       </div>
@@ -264,12 +240,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
     </div>
   </div>
 
-  <div class="insight ok">
-    <div class="insight-ico">✅</div>
-    <div>
-      <div class="insight-title">인프라 체계는 타대학 대비 양호 — 2캠퍼스 전담팀 운영</div>
-      <div class="insight-text">성균관대(서울·수원), 홍익대(서울·세종), 경희대(서울·수원) 모두 캠퍼스별 인프라 분리 운영 중입니다. 단국대도 죽전·천안 인프라팀을 별도 운영하고 있어 인프라 측면은 타대학과 동등 수준입니다.</div>
-    </div>
+  </div>
   </div>
 
   <!-- 비교표 -->
@@ -280,7 +251,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
       <tbody>
         <tr class="dku-row">
           <td>단국대</td><td>11+α</td><td>죽전·천안</td>
-          <td>인프라1팀(죽전) + 인프라2팀(천안) 별도</td>
+          <td>정보기획팀 단일 (인프라 별도)</td>
           <td><span class="chip c-red">0명</span></td>
           <td><span class="chip c-red">공백</span></td>
         </tr>
@@ -412,14 +383,14 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 
 <!-- 04. 인프라팀과의 협업 경계 정의 -->
 <div class="sec">
-  <div class="sec-title">04 · 정보기획팀 ↔ 인프라1·2팀 협업 경계 정의</div>
+  <div class="sec-title">04 · 정보기획팀 ↔ 인프라팀 협업 경계 정의</div>
 
   <div class="infra-full">
-    <div style="font-size:13px;font-weight:800;color:var(--infra);margin-bottom:4px;">🔧 인프라1팀(죽전) · 인프라2팀(천안) — 담당 영역 명확화</div>
+    <div style="font-size:13px;font-weight:800;color:var(--infra);margin-bottom:4px;">🔧 인프라팀 (죽전·천안) — 담당 영역 명확화</div>
     <div style="font-size:12px;color:#374151;margin-bottom:10px;">타대학 인프라팀 업무 분석 기반으로 아래와 같이 역할을 명문화할 것을 권고합니다.</div>
     <div class="infra-grid">
       <div class="infra-sub">
-        <div class="infra-sub-title">인프라1팀 <span class="campus-badge">죽전</span></div>
+        <div class="infra-sub-title">인프라팀 <span class="campus-badge">죽전</span></div>
         <ul class="task-ul">
           <li>서버·스토리지·가상화 운영 (죽전)</li>
           <li>유무선 네트워크 운영·장애 대응</li>
@@ -432,7 +403,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
         </ul>
       </div>
       <div class="infra-sub">
-        <div class="infra-sub-title">인프라2팀 <span class="campus-badge">천안</span></div>
+        <div class="infra-sub-title">인프라팀 <span class="campus-badge">천안</span></div>
         <ul class="task-ul">
           <li>서버·스토리지·가상화 운영 (천안)</li>
           <li>유무선 네트워크 운영·장애 대응</li>
