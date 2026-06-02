@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>단국대 디지털정보원 — 타대학 전산팀 분석 대시보드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f1a;--surf:#111827;--card:#161d2e;--border:#1e2d45;
+  --blue:#3b82f6;--cyan:#06b6d4;--purple:#8b5cf6;--green:#10b981;
+  --amber:#f59e0b;--pink:#e879f9;--text:#e2e8f0;--muted:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;}
+
+/* hero */
+.hero{
+  background:linear-gradient(135deg,#0b0f1a 0%,#0f1f3d 50%,#0b0f1a 100%);
+  border-bottom:1px solid var(--border);
+  padding:60px 40px 50px;text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;background:radial-gradient(circle,rgba(59,130,246,.08) 0%,transparent 70%);
+  pointer-events:none;}
+.hero-badge{display:inline-block;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);
+  color:var(--cyan);padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;
+  letter-spacing:1px;margin-bottom:18px;}
+.hero h1{font-size:30px;font-weight:900;letter-spacing:-1.5px;margin-bottom:8px;
+  background:linear-gradient(90deg,#e2e8f0,#93c5fd,#67e8f9);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero .sub{font-size:13px;color:var(--muted);margin-bottom:32px;}
+.hero-stats{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:10px;padding:12px 22px;text-align:center;}
+.stat .n{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:700;
+  color:var(--blue);line-height:1;}
+.stat .l{font-size:10px;color:var(--muted);margin-top:3px;font-weight:600;letter-spacing:.5px;}
+
+/* main */
+.main{max-width:960px;margin:0 auto;padding:48px 28px 80px;}
+
+.sec-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title::before{content:'';width:16px;height:2px;background:var(--blue);display:inline-block;}
+
+/* dashboard cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:48px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;text-decoration:none;color:var(--text);
+  transition:transform .22s,box-shadow .22s,border-color .22s;display:block;}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.5);border-color:rgba(59,130,246,.4);}
+.card-top{height:5px;}
+.c1 .card-top{background:linear-gradient(90deg,var(--blue),var(--cyan));}
+.c2 .card-top{background:linear-gradient(90deg,var(--purple),var(--pink));}
+.c3 .card-top{background:linear-gradient(90deg,var(--green),var(--cyan));}
+.card-body{padding:20px 22px 22px;}
+.card-icon{font-size:28px;margin-bottom:12px;}
+.card-title{font-size:16px;font-weight:800;letter-spacing:-.3px;margin-bottom:6px;}
+.card-desc{font-size:12.5px;color:var(--muted);line-height:1.7;margin-bottom:14px;}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;}
+.t-blue{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.25);}
+.t-purple{background:rgba(139,92,246,.15);color:#c4b5fd;border:1px solid rgba(139,92,246,.25);}
+.t-green{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.25);}
+.t-amber{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.25);}
+.t-pink{background:rgba(232,121,249,.15);color:#f0abfc;border:1px solid rgba(232,121,249,.25);}
+.t-cyan{background:rgba(6,182,212,.15);color:#67e8f9;border:1px solid rgba(6,182,212,.25);}
+.card-arrow{display:flex;align-items:center;justify-content:flex-end;gap:4px;
+  font-size:11px;color:var(--blue);font-weight:600;margin-top:10px;}
+
+/* summary table */
+.tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:48px;}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+.tbl th{background:#0f1623;padding:10px 16px;text-align:left;font-weight:700;
+  color:var(--muted);font-size:11px;letter-spacing:.5px;border-bottom:1px solid var(--border);}
+.tbl td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(59,130,246,.04);}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+
+/* footer */
+footer{text-align:center;padding:32px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--muted);}
+footer a{color:var(--blue);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+
+@media(max-width:600px){
+  .hero{padding:40px 20px 36px;}
+  .hero h1{font-size:22px;}
+  .main{padding:32px 16px 60px;}
+  .cards{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">2026 · 단국대학교 디지털정보원</div>
+  <h1>타대학 전산팀 운영현황 분석</h1>
+  <div class="sub">12개 대학 · 261명 · 551개 업무항목 기반 벤치마킹 대시보드</div>
+  <div class="hero-stats">
+    <div class="stat"><div class="n">12</div><div class="l">비교 대학</div></div>
+    <div class="stat"><div class="n">261</div><div class="l">분석 인원</div></div>
+    <div class="stat"><div class="n">551</div><div class="l">업무항목</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">대시보드</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="sec-title">대시보드</div>
+  <div class="cards">
+
+    <a class="card c1" href="타_대학_전산팀_조직도.html">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="card-icon">🏛️</div>
+        <div class="card-title">타대학 전산팀 조직도</div>
+        <div class="card-desc">13개 대학 전산팀의 부서 구조와 업무 분류별 인원 현황을 인터랙티브 조직도로 확인합니다.</div>
+        <div class="card-tags">
+          <span class="tag t-blue">13개 대학</span>
+          <span class="tag t-cyan">인원 분포</span>
+          <span class="tag t-blue">부서별 구조</span>
+        </div>
+        <div class="card-arrow">열기 →</div>
+      </div>
+    </a>
+
+    <a class="card c2" href="타_대학_전산팀_기획개발운영AI_조직도.html">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">기획·개발·운영·AI 조직도</div>
+        <div class="card-desc">551개 업무항목을 기획·개발·운영·AI 4개 축으로 분류하여 대학별 업무 구조를 비교합니다.</div>
+        <div class="card-tags">
+          <span class="tag t-purple">기획</span>
+          <span class="tag t-green">개발</span>
+          <span class="tag t-amber">운영</span>
+          <span class="tag t-pink">AI</span>
+        </div>
+        <div class="card-arrow">열기 →</div>
+      </div>
+    </a>
+
+    <a class="card c3" href="단국대_정보기획팀_업무분장_개편안_v2.html">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="card-icon">📋</div>
+        <div class="card-title">단국대 업무분장 개편안</div>
+        <div class="card-desc">타대학 벤치마킹 기반으로 정보기획팀 11명의 업무분장 개편 방향과 인프라팀 협업 체계를 제안합니다.</div>
+        <div class="card-tags">
+          <span class="tag t-green">단국대</span>
+          <span class="tag t-cyan">개편 제안</span>
+          <span class="tag t-blue">협업 체계</span>
+        </div>
+        <div class="card-arrow">열기 →</div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="sec-title">비교 대학 현황</div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>대학</th><th>부서명</th><th>총원</th>
+          <th>총괄</th><th>기획</th><th>인프라</th><th>학사</th><th>행정</th><th>연구</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="dot" style="background:#3b82f6;"></span><strong>단국대</strong></td><td>정보기획팀</td><td><strong>11</strong></td><td>1</td><td style="color:#ef4444;font-weight:700;">0</td><td style="color:#ef4444;font-weight:700;">0</td><td>4</td><td>2</td><td>2</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>서울대</td><td>정보화본부</td><td>53</td><td>5</td><td>6</td><td>14</td><td>4</td><td>15</td><td>1</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>연세대</td><td>정보통신처</td><td>29</td><td>4</td><td>0</td><td>7</td><td>7</td><td>4</td><td>1</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>고려대</td><td>디지털정보처</td><td>29</td><td>3</td><td>4</td><td>6</td><td>4</td><td>5</td><td>4</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>성균관대</td><td>정보통신처</td><td>35</td><td>2</td><td>0</td><td>11</td><td>2</td><td>6</td><td>4</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>중앙대</td><td>정보통신처</td><td>14</td><td>2</td><td>0</td><td>6</td><td>1</td><td>4</td><td>0</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>경희대</td><td>정보처</td><td>14</td><td>3</td><td>0</td><td>2</td><td>0</td><td>6</td><td>0</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>건국대</td><td>정보통신처</td><td>19</td><td>2</td><td>0</td><td>3</td><td>3</td><td>5</td><td>1</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>동국대</td><td>디지털정보처</td><td>10</td><td>2</td><td>0</td><td>3</td><td>2</td><td>2</td><td>1</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>홍익대</td><td>정보전산팀</td><td>18</td><td>1</td><td>0</td><td>9</td><td>2</td><td>1</td><td>0</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>숭실대</td><td>정보화센터</td><td>13</td><td>3</td><td>0</td><td>4</td><td>4</td><td>1</td><td>0</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>세종대</td><td>전산정보처</td><td>10</td><td>3</td><td>0</td><td>0</td><td>2</td><td>2</td><td>0</td></tr>
+        <tr><td><span class="dot" style="background:#64748b;"></span>인하대</td><td>정보통신처</td><td>17</td><td>3</td><td>0</td><td>3</td><td>0</td><td>0</td><td>0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  단국대학교 디지털정보원 정보기획팀 &nbsp;·&nbsp; 2026 타대학 벤치마킹 &nbsp;·&nbsp;
+  <a href="https://github.com/Leejongku/university_department_dashboard" target="_blank">GitHub</a>
+</footer>
+
+</body>
+</html>
