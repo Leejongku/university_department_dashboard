@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>단국대 디지털정보원 — 전산팀 분석 종합</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f1a;--surf:#111827;--card:#161d2e;--border:#1e2d45;
+  --blue:#3b82f6;--cyan:#06b6d4;--purple:#8b5cf6;--green:#10b981;
+  --amber:#f59e0b;--pink:#e879f9;--red:#ef4444;
+  --text:#e2e8f0;--muted:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;
+  display:flex;flex-direction:column;}
+
+/* ── 헤더 ── */
+.hdr{
+  background:linear-gradient(135deg,#080d18 0%,#0f1f3d 50%,#080d18 100%);
+  border-bottom:1px solid var(--border);
+  padding:14px 28px;flex-shrink:0;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.hdr-title{
+  font-size:15px;font-weight:800;letter-spacing:-.3px;white-space:nowrap;
+  background:linear-gradient(90deg,#e2e8f0,#93c5fd,#67e8f9);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hdr-year{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--cyan);
+  background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);
+  padding:2px 8px;border-radius:4px;white-space:nowrap;
+}
+
+/* ── 탭 네비 ── */
+.nav{
+  background:var(--surf);border-bottom:1px solid var(--border);
+  padding:0 28px;flex-shrink:0;display:flex;overflow-x:auto;gap:2px;
+  scrollbar-width:none;
+}
+.nav::-webkit-scrollbar{display:none;}
+
+.nav-group{display:flex;flex-direction:column;padding:8px 0 0;}
+.nav-group-label{
+  font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted);
+  text-transform:uppercase;padding:0 12px;margin-bottom:4px;
+}
+.nav-tabs{display:flex;gap:2px;}
+
+.tab{
+  padding:7px 14px 10px;border-radius:8px 8px 0 0;font-size:12px;font-weight:600;
+  cursor:pointer;border:1px solid transparent;border-bottom:none;
+  color:var(--muted);background:transparent;white-space:nowrap;
+  transition:all .18s;display:flex;align-items:center;gap:6px;
+}
+.tab:hover{color:var(--text);background:var(--card);}
+.tab.active{
+  color:#fff;border-color:var(--border);
+  border-bottom:2px solid var(--bg);margin-bottom:-1px;
+}
+.tab .ico{font-size:13px;}
+.tab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* 탭 그룹별 색상 */
+.t-타대학.active  {background:#0f1e38;border-top-color:var(--blue);}
+.t-타대학  .tab-dot{background:var(--blue);}
+.t-조직도.active  {background:#0f1e38;border-top-color:var(--cyan);}
+.t-조직도  .tab-dot{background:var(--cyan);}
+.t-단국대.active  {background:#1a1030;border-top-color:var(--purple);}
+.t-단국대  .tab-dot{background:var(--purple);}
+.t-재조정.active  {background:#0f1e2a;border-top-color:var(--green);}
+.t-재조정  .tab-dot{background:var(--green);}
+
+/* ── iframe 영역 ── */
+.iframe-wrap{flex:1;position:relative;overflow:hidden;}
+.pane{
+  position:absolute;inset:0;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.pane.active{opacity:1;pointer-events:auto;}
+.pane iframe{width:100%;height:100%;border:none;background:#fff;}
+
+/* ── 홈 패널 ── */
+.home-pane{
+  position:absolute;inset:0;overflow-y:auto;
+  padding:32px 40px 60px;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.home-pane.active{opacity:1;pointer-events:auto;}
+.home-hero{
+  background:linear-gradient(135deg,#0b1628 0%,#0f1f3d 60%,#0b1628 100%);
+  border:1px solid var(--border);border-radius:14px;
+  padding:32px 36px;margin-bottom:28px;position:relative;overflow:hidden;
+}
+.home-hero::before{content:'';position:absolute;top:-80px;right:-80px;
+  width:260px;height:260px;background:radial-gradient(circle,rgba(59,130,246,.08),transparent 70%);}
+.home-hero h2{font-size:22px;font-weight:900;letter-spacing:-1px;margin-bottom:6px;
+  background:linear-gradient(90deg,#e2e8f0,#93c5fd,#67e8f9);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.home-hero p{font-size:12.5px;color:var(--muted);line-height:1.8;margin-bottom:20px;}
+.hero-stats{display:flex;gap:12px;flex-wrap:wrap;}
+.hstat{background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:9px;padding:10px 16px;text-align:center;}
+.hstat .n{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;
+  color:var(--blue);line-height:1;}
+.hstat .l{font-size:10px;color:var(--muted);margin-top:2px;font-weight:600;}
+
+.menu-section{margin-bottom:22px;}
+.menu-label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);
+  text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.menu-label::before{content:'';width:12px;height:2px;display:inline-block;}
+.ml-blue::before{background:var(--blue);}
+.ml-cyan::before{background:var(--cyan);}
+.ml-purple::before{background:var(--purple);}
+.ml-green::before{background:var(--green);}
+
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
+.menu-card{
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;cursor:pointer;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.menu-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.mc-blue:hover  {border-color:rgba(59,130,246,.4);}
+.mc-cyan:hover  {border-color:rgba(6,182,212,.4);}
+.mc-purple:hover{border-color:rgba(139,92,246,.4);}
+.mc-green:hover {border-color:rgba(16,185,129,.4);}
+.menu-ico{font-size:22px;flex-shrink:0;}
+.menu-title{font-size:13px;font-weight:700;margin-bottom:3px;}
+.menu-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.menu-badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;
+  border-radius:5px;margin-top:4px;}
+.mb-blue  {background:rgba(59,130,246,.15);color:#93c5fd;}
+.mb-cyan  {background:rgba(6,182,212,.15);color:#67e8f9;}
+.mb-purple{background:rgba(139,92,246,.15);color:#c4b5fd;}
+.mb-green {background:rgba(16,185,129,.15);color:#6ee7b7;}
+
+@media(max-width:700px){
+  .hdr{padding:10px 16px;}
+  .nav{padding:0 12px;}
+  .home-pane{padding:20px 16px 40px;}
+  .home-hero{padding:20px;}
+  .home-hero h2{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="hdr">
+  <div class="hdr-title">단국대 디지털정보원 — 타대학 전산팀 분석 종합</div>
+  <span class="hdr-year">2026</span>
+</div>
+
+<!-- 탭 네비 -->
+<div class="nav">
+  <!-- 홈 -->
+  <div class="nav-group">
+    <div class="nav-tabs">
+      <div class="tab active" data-pane="home" onclick="switchTab(this,'home')">
+        <span class="ico">🏠</span> 홈
+      </div>
+    </div>
+  </div>
+
+  <div style="width:1px;background:var(--border);margin:8px 6px;flex-shrink:0;"></div>
+
+  <!-- 타대학 현황 -->
+  <div class="nav-group">
+    <div class="nav-group-label">타대학 현황</div>
+    <div class="nav-tabs">
+      <div class="tab t-타대학" data-pane="org" onclick="switchTab(this,'org')">
+        <span class="tab-dot"></span><span class="ico">🏛️</span> 조직도
+      </div>
+      <div class="tab t-조직도" data-pane="ai" onclick="switchTab(this,'ai')">
+        <span class="tab-dot"></span><span class="ico">⚙️</span> 기획·개발·운영·AI
+      </div>
+    </div>
+  </div>
+
+  <div style="width:1px;background:var(--border);margin:8px 6px;flex-shrink:0;"></div>
+
+  <!-- 단국대 분석 -->
+  <div class="nav-group">
+    <div class="nav-group-label">단국대 분석</div>
+    <div class="nav-tabs">
+      <div class="tab t-단국대" data-pane="plan" onclick="switchTab(this,'plan')">
+        <span class="tab-dot"></span><span class="ico">📋</span> 업무분장 개편안
+      </div>
+      <div class="tab t-단국대" data-pane="split" onclick="switchTab(this,'split')">
+        <span class="tab-dot"></span><span class="ico">🔀</span> 파트분리 방안
+      </div>
+      <div class="tab t-재조정" data-pane="reorg" onclick="switchTab(this,'reorg')">
+        <span class="tab-dot"></span><span class="ico">🔧</span> 업무재조정 방안
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 홈 패널 -->
+<div class="home-pane active" id="pane-home">
+  <div class="home-hero">
+    <h2>타대학 전산팀 운영현황 분석 종합</h2>
+    <p>
+      12개 대학 · 261명 · 551개 업무항목 기반 벤치마킹<br>
+      타대학 조직 구조 분석 → 단국대 정보기획팀 업무 재조정 방안 도출
+    </p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">12</div><div class="l">비교 대학</div></div>
+      <div class="hstat"><div class="n">261</div><div class="l">분석 인원</div></div>
+      <div class="hstat"><div class="n">551</div><div class="l">업무항목</div></div>
+      <div class="hstat"><div class="n">5</div><div class="l">분석 리포트</div></div>
+    </div>
+  </div>
+
+  <!-- 타대학 현황 -->
+  <div class="menu-section">
+    <div class="menu-label ml-blue">타대학 현황</div>
+    <div class="menu-grid">
+      <div class="menu-card mc-blue" onclick="switchTabById('org')">
+        <div class="menu-ico">🏛️</div>
+        <div>
+          <div class="menu-title">타대학 전산팀 조직도</div>
+          <div class="menu-desc">13개 대학 부서 구조·인원 분포·업무 분류 조직도. 마우스 오버로 업무항목 확인 가능.</div>
+          <div class="menu-badge mb-blue">인터랙티브</div>
+        </div>
+      </div>
+      <div class="menu-card mc-cyan" onclick="switchTabById('ai')">
+        <div class="menu-ico">⚙️</div>
+        <div>
+          <div class="menu-title">기획·개발·운영·AI 조직도</div>
+          <div class="menu-desc">551개 업무항목을 4개 축으로 분류. AI 업무 감지 대학 하이라이트.</div>
+          <div class="menu-badge mb-cyan">업무 분류</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 단국대 분석 -->
+  <div class="menu-section">
+    <div class="menu-label ml-purple">단국대 분석</div>
+    <div class="menu-grid">
+      <div class="menu-card mc-purple" onclick="switchTabById('plan')">
+        <div class="menu-ico">📋</div>
+        <div>
+          <div class="menu-title">업무분장 개편안</div>
+          <div class="menu-desc">현재 인원 구성 진단 · 5개 파트 역할 정의 · 공백 분석.</div>
+          <div class="menu-badge mb-purple">현황 진단</div>
+        </div>
+      </div>
+      <div class="menu-card mc-purple" onclick="switchTabById('split')">
+        <div class="menu-ico">🔀</div>
+        <div>
+          <div class="menu-title">파트분리 방안</div>
+          <div class="menu-desc">연세대 정보전략팀·학사정보팀·연구행정팀 구조를 11명에 적용한 로드맵.</div>
+          <div class="menu-badge mb-purple">연세대 벤치마킹</div>
+        </div>
+      </div>
+      <div class="menu-card mc-green" onclick="switchTabById('reorg')">
+        <div class="menu-ico">🔧</div>
+        <div>
+          <div class="menu-title">업무재조정 방안</div>
+          <div class="menu-desc">연세대·동국대·인하대·고려대 실제 사례 → 단국대 파트별 역할 재조정.</div>
+          <div class="menu-badge mb-green">타대학 사례 기반</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- iframe 패널들 -->
+<div class="pane" id="pane-org">
+  <iframe src="타_대학_전산팀_조직도.html" loading="lazy"></iframe>
+</div>
+<div class="pane" id="pane-ai">
+  <iframe src="타_대학_전산팀_기획개발운영AI_조직도.html" loading="lazy"></iframe>
+</div>
+<div class="pane" id="pane-plan">
+  <iframe src="단국대_정보기획팀_업무분장_개편안_v2.html" loading="lazy"></iframe>
+</div>
+<div class="pane" id="pane-split">
+  <iframe src="단국대_정보기획팀_파트분리_방안.html" loading="lazy"></iframe>
+</div>
+<div class="pane" id="pane-reorg">
+  <iframe src="단국대_정보기획팀_업무재조정_방안.html" loading="lazy"></iframe>
+</div>
+
+<script>
+function switchTab(el, paneId) {
+  // 탭 활성화
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  // 패널 활성화
+  document.querySelectorAll('.pane, .home-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('pane-' + paneId).classList.add('active');
+}
+
+function switchTabById(paneId) {
+  const tab = document.querySelector(`.tab[data-pane="${paneId}"]`);
+  if (tab) switchTab(tab, paneId);
+}
+</script>
+</body>
+</html>
