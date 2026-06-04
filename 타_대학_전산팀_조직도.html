@@ -106,15 +106,20 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
   border-radius:10px;padding:12px 14px;
   width:300px;max-width:90vw;
   box-shadow:0 16px 48px rgba(0,0,0,.7);
-  pointer-events:none;opacity:0;transition:opacity .15s;
+  pointer-events:auto;opacity:0;transition:opacity .2s;
   font-size:12px;line-height:1.7;
+  visibility:hidden;
 }
-.tooltip.show{opacity:1;}
+.tooltip.show{opacity:1;visibility:visible;}
 .tt-header{display:flex;align-items:center;gap:6px;margin-bottom:8px;
   padding-bottom:8px;border-bottom:1px solid var(--border);}
 .tt-cat{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;}
 .tt-team{font-size:11px;color:var(--muted);}
-.tt-items{display:flex;flex-direction:column;gap:3px;max-height:240px;overflow-y:auto;}
+.tt-items{display:flex;flex-direction:column;gap:3px;max-height:260px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:#334155 transparent;}
+.tt-items::-webkit-scrollbar{width:4px;}
+.tt-items::-webkit-scrollbar-track{background:transparent;}
+.tt-items::-webkit-scrollbar-thumb{background:#334155;border-radius:2px;}
 .tt-item{color:#cbd5e1;padding:2px 0 2px 10px;border-left:2px solid var(--border);font-size:11.5px;}
 .tt-empty{color:var(--muted);font-size:11px;font-style:italic;}
 .tt-count{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;}
@@ -169,105 +174,146 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 <div class="main" id="main"></div>
 
 <script>
-const UNIVERSITIES =  [
+const UNIVERSITIES = [
   {
-    id: 'dankook', name: '단국대', dept: '디지털정보원 정보기획팀',
-    teams: [
-      { name: '정보기획팀', 총괄:1, 기획:0, 공통:2, 인프라:0, LMS:0, 학사:4, 행정:2, 연구:2, 기타:0, note:'공통: 계약직 1명 포함' }
+    id:'dankook', name:'단국대', dept:'디지털정보원',
+    teams:[
+      { name:'정보기획팀',    총괄:1,기획:0,공통:2,인프라:0,LMS:0,학사:4,행정:2,연구:2,기타:0,
+        note:'종합정보시스템(학사/행정/연구) 개발 및 운영' },
+      { name:'디지털인프라팀',총괄:2,기획:0,공통:0,인프라:9,LMS:2,학사:0,행정:0,연구:0,기타:4,
+        note:'인프라 및 정보보안 / 기타(4):행사·강의지원 / LMS담당(2) 포함' },
+      { name:'디지털러닝팀',  총괄:1,기획:0,공통:0,인프라:0,LMS:4,학사:0,행정:0,연구:0,기타:0,
+        note:'LMS 운영 및 관련 시스템 관리 지원' }
     ]
   },
   {
-    id: 'snu', name: '서울대', dept: '정보화본부',
-    teams: [
-      { name: '정보화본부',  총괄:2, 기획:0, 공통:0, 인프라:0,  LMS:0, 학사:0,  행정:0,  연구:0, 기타:0 },
-      { name: '정보화기획과',총괄:1, 기획:5, 공통:4, 인프라:1,  LMS:1, 학사:0,  행정:2,  연구:0, 기타:2 },
-      { name: '정보화지원과',총괄:1, 기획:1, 공통:0, 인프라:13, LMS:0, 학사:0,  행정:0,  연구:0, 기타:0 },
-      { name: '정보서비스과',총괄:1, 기획:0, 공통:1, 인프라:0,  LMS:0, 학사:4,  행정:13, 연구:1, 기타:0 }
+    id:'snu', name:'서울대', dept:'정보화본부',
+    teams:[
+      { name:'정보화본부',   총괄:2,기획:0,공통:0,인프라:0,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'총괄' },
+      { name:'정보화기획과', 총괄:1,기획:5,공통:4,인프라:1,LMS:1,학사:0,행정:2,연구:0,기타:2,
+        note:'정보화기획 및 웹서비스·이러닝(eTL) 운영' },
+      { name:'정보화지원과', 총괄:1,기획:1,공통:0,인프라:13,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 및 정보보안' },
+      { name:'정보서비스과', 총괄:1,기획:0,공통:1,인프라:0,LMS:0,학사:4,행정:13,연구:1,기타:0,
+        note:'행정정보서비스·연구지원·ERP 운영' }
     ]
   },
   {
-    id: 'yonsei', name: '연세대', dept: '정보통신처',
-    teams: [
-      { name: '정보전략팀',    총괄:1, 기획:0, 공통:2, 인프라:0, LMS:0, 학사:0, 행정:1, 연구:0, 기타:0, note:'홈페이지·CMS·직원채용시스템' },
-      { name: '학사정보팀',    총괄:0, 기획:0, 공통:0, 인프라:0, LMS:2, 학사:7, 행정:0, 연구:0, 기타:0, note:'학사정보시스템·LMS' },
-      { name: '연구행정정보팀',총괄:1, 기획:0, 공통:1, 인프라:0, LMS:0, 학사:0, 행정:3, 연구:1, 기타:0, note:'ERP시스템' },
-      { name: '정보운영팀',    총괄:1, 기획:0, 공통:1, 인프라:3, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0, note:'인프라 업무' },
-      { name: '정보보호팀',    총괄:1, 기획:0, 공통:0, 인프라:4, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0, note:'보안 전담 부서' }
+    id:'yonsei', name:'연세대', dept:'정보통신처',
+    teams:[
+      { name:'정보전략팀',    총괄:1,기획:0,공통:2,인프라:0,LMS:0,학사:0,행정:1,연구:0,기타:0,
+        note:'홈페이지(대표·CMS)·직원채용시스템·고등교육통계 데이터 관리' },
+      { name:'학사정보팀',    총괄:0,기획:0,공통:0,인프라:0,LMS:2,학사:7,행정:0,연구:0,기타:0,
+        note:'학사정보시스템 및 LMS 관련 업무' },
+      { name:'연구행정정보팀',총괄:1,기획:0,공통:1,인프라:0,LMS:0,학사:0,행정:3,연구:1,기타:0,
+        note:'ERP시스템(인사·재무·구매) 및 연구정보·그룹웨어' },
+      { name:'정보운영팀',   총괄:1,기획:0,공통:1,인프라:3,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 업무 (서버·네트워크·통신)' },
+      { name:'정보보호팀',   총괄:1,기획:0,공통:0,인프라:4,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'정보보안 전담 / 보안정책·DBMS·침해사고대응·보안관제' }
     ]
   },
   {
-    id: 'korea', name: '고려대', dept: '디지털정보처',
-    teams: [
-      { name: '정보개발팀',  총괄:1, 기획:1, 공통:1, 인프라:0, LMS:0, 학사:4, 행정:5, 연구:4, 기타:0, note:'학사·행정 담당이 기획 업무 겸직' },
-      { name: '정보인프라팀',총괄:1, 기획:0, 공통:0, 인프라:6, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0, note:'인프라 업무' },
-      { name: '디지털전략팀',총괄:1, 기획:3, 공통:2, 인프라:0, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0, note:'기획 및 도서관·학술정보 관련' }
+    id:'korea', name:'고려대', dept:'디지털정보처',
+    teams:[
+      { name:'정보개발팀',  총괄:1,기획:1,공통:1,인프라:0,LMS:0,학사:4,행정:5,연구:4,기타:0,
+        note:'포털·학사·행정·연구시스템 담당 / 학사·행정담당이 기획 겸직 多' },
+      { name:'정보인프라팀',총괄:1,기획:0,공통:0,인프라:6,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 및 정보보안' },
+      { name:'디지털전략팀',총괄:1,기획:3,공통:2,인프라:0,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'기획 및 도서관(학술정보시스템·DB·홈페이지) / LMS도 담당(비공식)' }
     ]
   },
   {
-    id: 'skku', name: '성균관대', dept: '정보통신처',
-    teams: [
-      { name: '정보통신팀(서울)', 총괄:1, 기획:0, 공통:2, 인프라:5, LMS:0, 학사:0, 행정:0, 연구:0, 기타:1, note:'개발(2) 및 인프라' },
-      { name: '정보통신팀(수원)', 총괄:1, 기획:0, 공통:6, 인프라:6, LMS:0, 학사:2, 행정:6, 연구:4, 기타:1, note:'개발 및 인프라' }
+    id:'skku', name:'성균관대', dept:'정보통신처',
+    teams:[
+      { name:'정보통신팀(서울)',총괄:1,기획:0,공통:2,인프라:3,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 업무 / IT콜센터·FAX담당 포함' },
+      { name:'정보통신팀(수원)',총괄:1,기획:0,공통:2,인프라:9,LMS:0,학사:3,행정:8,연구:3,기타:3,
+        note:'인프라·보안 및 시스템 개발·운영 / LMS:교육혁신팀(별도)' }
     ]
   },
   {
-    id: 'cau', name: '중앙대', dept: '정보통신처',
-    teams: [
-      { name: '정보인프라팀', 총괄:1, 기획:0, 공통:0, 인프라:6, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0, note:'인프라 업무 / LMS는 교육혁신원 담당' },
-      { name: '시스템개발팀', 총괄:1, 기획:0, 공통:1, 인프라:0, LMS:0, 학사:1, 행정:4, 연구:0, 기타:0, note:'개발 업무' }
+    id:'cau', name:'중앙대', dept:'정보통신처',
+    teams:[
+      { name:'정보인프라팀', 총괄:1,기획:0,공통:0,인프라:6,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 및 정보보안 / LMS:디지털교육지원센터(별도)' },
+      { name:'시스템개발팀', 총괄:1,기획:0,공통:1,인프라:0,LMS:0,학사:1,행정:4,연구:0,기타:0,
+        note:'시스템 개발 및 운영' }
     ]
   },
   {
-    id: 'khu', name: '경희대', dept: '정보처',
-    teams: [
-      { name: '정보기획팀',         총괄:1, 기획:0, 공통:1, 인프라:2, LMS:0, 학사:0, 행정:2, 연구:0, 기타:2, note:'서울캠퍼스 총괄' },
-      { name: '경영정보팀(국제A)',   총괄:1, 기획:0, 공통:0, 인프라:0, LMS:0, 학사:0, 행정:2, 연구:0, 기타:0, note:'국제캠퍼스' },
-      { name: '경영정보팀(국제B)',   총괄:1, 기획:0, 공통:0, 인프라:0, LMS:0, 학사:0, 행정:2, 연구:0, 기타:0, note:'국제캠퍼스' }
+    id:'khu', name:'경희대', dept:'정보처',
+    teams:[
+      { name:'정보기획팀',  총괄:1,기획:0,공통:1,인프라:2,LMS:0,학사:0,행정:1,연구:0,기타:3,
+        note:'인프라·보안·공통(홈페이지·전자결재·메일) / 기타(3):행정보조·콜센터' },
+      { name:'경영정보팀',  총괄:1,기획:0,공통:0,인프라:0,LMS:0,학사:0,행정:1,연구:0,기타:0,
+        note:'DBA 및 정보시스템 행정 업무' },
+      { name:'학사정보팀',  총괄:1,기획:0,공통:1,인프라:0,LMS:0,학사:2,행정:0,연구:0,기타:0,
+        note:'포털 및 정보시스템 학사 업무 / LMS:교수학습개발원(별도)' }
     ]
   },
   {
-    id: 'konkuk', name: '건국대', dept: '정보통신처',
-    teams: [
-      { name: '정보운영팀',  총괄:1, 기획:0, 공통:1, 인프라:0, LMS:0, 학사:3, 행정:5, 연구:1, 기타:3 },
-      { name: '정보인프라팀',총괄:1, 기획:0, 공통:0, 인프라:3, LMS:0, 학사:0, 행정:0, 연구:0, 기타:1 }
+    id:'konkuk', name:'건국대', dept:'정보통신처',
+    teams:[
+      { name:'정보운영팀',  총괄:1,기획:0,공통:1,인프라:0,LMS:0,학사:3,행정:5,연구:1,기타:3,
+        note:'학사·행정정보시스템 / 기타(3):문의·지출결의·홈페이지공지' },
+      { name:'정보인프라팀',총괄:1,기획:0,공통:0,인프라:3,LMS:0,학사:0,행정:0,연구:0,기타:1,
+        note:'인프라 및 정보보안 / 기타(1):IT콜센터 / LMS:교수학습센터(별도)' }
     ]
   },
   {
-    id: 'dongguk', name: '동국대', dept: '디지털정보처',
-    teams: [
-      { name: '정보운영팀',  총괄:1, 기획:0, 공통:0, 인프라:0, LMS:0, 학사:2, 행정:2, 연구:1, 기타:0 },
-      { name: '정보인프라팀',총괄:1, 기획:0, 공통:0, 인프라:3, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0 }
+    id:'dongguk', name:'동국대', dept:'디지털정보처·학술정보팀',
+    teams:[
+      { name:'정보운영팀',  총괄:1,기획:0,공통:0,인프라:0,LMS:0,학사:1,행정:2,연구:1,기타:0,
+        note:'nDRIMS 시스템 개발 및 운영' },
+      { name:'정보인프라팀',총괄:1,기획:0,공통:0,인프라:3,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 및 정보보안' },
+      { name:'학술정보팀',  총괄:1,기획:0,공통:1,인프라:0,LMS:0,학사:2,행정:1,연구:1,기타:0,
+        note:'정보기획(5)·학사·행정·연구·공통 / 도서관운영(7)은 제외' }
     ]
   },
   {
-    id: 'hongik', name: '홍익대', dept: '정보전산팀 / 전산관리팀',
-    teams: [
-      { name: '정보전산팀',  총괄:0, 기획:0, 공통:4, 인프라:5, LMS:0, 학사:2, 행정:1, 연구:0, 기타:1, note:'서울캠퍼스' },
-      { name: '전산관리팀',  총괄:1, 기획:0, 공통:0, 인프라:4, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0, note:'세종캠퍼스' }
+    id:'hongik', name:'홍익대', dept:'정보전산팀/전산관리팀',
+    teams:[
+      { name:'정보전산팀',  총괄:0,기획:0,공통:4,인프라:5,LMS:0,학사:2,행정:1,연구:0,기타:1,
+        note:'인프라·시스템 개발·운영 / 인프라담당이 홈페이지도 겸직(1)' },
+      { name:'전산관리팀',  총괄:1,기획:0,공통:0,인프라:4,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 및 정보보안 (세종캠퍼스) / LMS:교수학습센터(별도)' }
     ]
   },
   {
-    id: 'soongsil', name: '숭실대', dept: '정보화센터',
-    teams: [
-      { name: '정보보호팀',    총괄:1, 기획:0, 공통:0, 인프라:2, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0 },
-      { name: '클라우드운영팀',총괄:1, 기획:0, 공통:0, 인프라:1, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0 },
-      { name: '정보화팀',      총괄:1, 기획:0, 공통:1, 인프라:1, LMS:0, 학사:4, 행정:1, 연구:0, 기타:0 }
+    id:'soongsil', name:'숭실대', dept:'정보화센터',
+    teams:[
+      { name:'정보보호팀',    총괄:1,기획:0,공통:0,인프라:2,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'정보보안 업무 / 총괄(팀장) 겸직' },
+      { name:'클라우드운영팀',총괄:1,기획:0,공통:0,인프라:1,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 업무' },
+      { name:'정보화팀',      총괄:1,기획:0,공통:1,인프라:1,LMS:0,학사:4,행정:1,연구:0,기타:0,
+        note:'학사·행정시스템 개발·운영 / LMS:원격교육지원팀(별도)' }
     ]
   },
   {
-    id: 'sejong', name: '세종대', dept: '전산정보처',
-    teams: [
-      { name: '전산개발과',  총괄:1, 기획:0, 공통:2, 인프라:0, LMS:0, 학사:2, 행정:1, 연구:0, 기타:0 },
-      { name: '전산운영과',  총괄:1, 기획:0, 공통:0, 인프라:0, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0 },
-      { name: '데이터혁신과',총괄:1, 기획:0, 공통:1, 인프라:0, LMS:0, 학사:0, 행정:1, 연구:0, 기타:0 }
+    id:'sejong', name:'세종대', dept:'전산정보처',
+    teams:[
+      { name:'전산개발과',   총괄:1,기획:0,공통:2,인프라:0,LMS:0,학사:2,행정:1,연구:0,기타:0,
+        note:'통합정보시스템 개발 및 운영' },
+      { name:'전산운영과',   총괄:1,기획:0,공통:0,인프라:0,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'총괄(1)이 인프라 업무 담당' },
+      { name:'데이터혁신과', 총괄:1,기획:0,공통:1,인프라:0,LMS:0,학사:0,행정:1,연구:0,기타:0,
+        note:'데이터통합관리시스템·졸업사정·홈페이지 운영관리 / LMS:교수학습개발센터(별도)' }
     ]
   },
   {
-    id: 'inha', name: '인하대', dept: '정보통신처',
-    teams: [
-      { name: 'IT개발팀',   총괄:1, 기획:0, 공통:0, 인프라:0, LMS:0, 학사:0, 행정:0, 연구:0, 기타:6 },
-      { name: 'IT서비스팀', 총괄:1, 기획:0, 공통:5, 인프라:0, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0 },
-      { name: 'IT인프라팀', 총괄:1, 기획:0, 공통:0, 인프라:3, LMS:0, 학사:0, 행정:0, 연구:0, 기타:0 }
+    id:'inha', name:'인하대', dept:'정보통신처',
+    teams:[
+      { name:'IT개발팀',   총괄:1,기획:0,공통:0,인프라:0,LMS:0,학사:0,행정:0,연구:0,기타:6,
+        note:'시스템 개발(학사·행정·공통·입시 2개이상 겸담 → 기타로 분류)' },
+      { name:'IT서비스팀', 총괄:1,기획:0,공통:5,인프라:0,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'홈페이지·포털 관련 업무' },
+      { name:'IT인프라팀', 총괄:1,기획:0,공통:0,인프라:3,LMS:0,학사:0,행정:0,연구:0,기타:0,
+        note:'인프라 업무 / LMS:원격교육지원센터(별도)' }
     ]
   }
 ];
@@ -324,8 +370,23 @@ function posTooltip(e) {
   tip.style.top  = y + 'px';
 }
 
-document.addEventListener('mousemove', e => { if(tip.classList.contains('show')) posTooltip(e); });
-document.addEventListener('mouseout',  e => { if(!e.relatedTarget || !tip.contains(e.relatedTarget)) tip.classList.remove('show'); });
+// ── 툴팁 표시/숨김 타이머 (딜레이로 깜빡임 방지) ──
+let tipHideTimer = null;
+
+function scheduleTipHide(){
+  tipHideTimer = setTimeout(()=>{ tip.classList.remove('show'); }, 200);
+}
+function cancelTipHide(){
+  if(tipHideTimer){ clearTimeout(tipHideTimer); tipHideTimer=null; }
+}
+
+// 툴팁 자체에 마우스 올리면 숨김 취소
+tip.addEventListener('mouseenter', cancelTipHide);
+tip.addEventListener('mouseleave', scheduleTipHide);
+
+document.addEventListener('mousemove', e => {
+  if(tip.classList.contains('show')) posTooltip(e);
+});
 
 // ── 탭 ──
 function renderTabs(){
@@ -376,8 +437,8 @@ function buildPanel(u){
   const sumTags = FIELDS
     .filter(f => fieldTotals[f] > 0)
     .map(f => `<span class="tag t-${f}" 
-      onmouseenter="showFieldTooltip(event,'${u.name}','${f}',${fieldTotals[f]})"
-      onmouseleave="tip.classList.remove('show')">
+      onmouseenter="cancelTipHide();showFieldTooltip(event,'${u.name}','${f}',${fieldTotals[f]})"
+      onmouseenter-cancel="1" onmouseleave="scheduleTipHide()">
       ${f}<span class="cnt">${fieldTotals[f]}</span></span>`)
     .join('');
 
@@ -422,8 +483,8 @@ function buildCard(u, team, dData){
     if (items.length === 0) return '';
     const cls = cat==='AI'?'wt-ai':cat==='기획'?'wt-plan':cat==='개발'?'wt-dev':'wt-ops';
     return `<span class="work-tag ${cls}"
-      onmouseenter="showTooltip(event,'${u.name}','${team.name.replace(/'/g,"\'")}','${cat}',workData['${u.name}']['${team.name.replace(/'/g,"\'")}']['${cat}'])"
-      onmouseleave="tip.classList.remove('show')">
+      onmouseenter="cancelTipHide();showTooltip(event,'${u.name}','${team.name.replace(/'/g,"\'")}','${cat}',workData['${u.name}']['${team.name.replace(/'/g,"\'")}']['${cat}'])"
+      onmouseenter-cancel="1" onmouseleave="scheduleTipHide()">
       ${cat==='AI'?'★ AI':cat}<span class="cnt">${items.length}</span>
     </span>`;
   }).join('');
