@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>단국대 정보기획팀 파트 분리 방안</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4f8;--white:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --dku:#1e40af;--dku-lt:#dbeafe;--dku-md:#3b82f6;
+  --yonsei:#0f766e;--yonsei-lt:#ccfbf1;--yonsei-bd:#5eead4;
+  --strat:#7c3aed;--strat-lt:#ede9fe;--strat-bd:#c4b5fd;
+  --dev:#0369a1;--dev-lt:#e0f2fe;--dev-bd:#7dd3fc;
+  --ops:#b45309;--ops-lt:#fef3c7;--ops-bd:#fcd34d;
+  --ai:#9d174d;--ai-lt:#fce7f3;--ai-bd:#f9a8d4;
+  --warn:#dc2626;--warn-lt:#fee2e2;
+  --ok:#16a34a;--ok-lt:#dcfce7;
+  --text:#1e293b;--muted:#64748b;--light:#94a3b8;
+  --sh:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.7;}
+.page{max-width:1060px;margin:0 auto;padding:36px 24px 80px;}
+
+/* cover */
+.cover{background:linear-gradient(135deg,#1e3a8a,#1e40af 50%,#2563eb);
+  color:#fff;border-radius:16px;padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;}
+.cover::after{content:'';position:absolute;top:-80px;right:-80px;width:260px;height:260px;
+  background:rgba(255,255,255,.05);border-radius:50%;}
+.cover-badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:12px;}
+.cover h1{font-size:23px;font-weight:900;letter-spacing:-1px;margin-bottom:4px;}
+.cover .sub{font-size:12.5px;opacity:.75;margin-bottom:20px;}
+.cover-stats{display:flex;gap:12px;flex-wrap:wrap;}
+.cs{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:10px;padding:10px 16px;text-align:center;min-width:80px;}
+.cs .n{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;line-height:1;}
+.cs .l{font-size:10px;opacity:.7;margin-top:2px;font-weight:600;}
+
+/* sec */
+.sec{margin-bottom:24px;}
+.sec-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sec-title::before{content:'';width:14px;height:2px;background:var(--dku-md);display:inline-block;}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;
+  padding:18px 22px;box-shadow:var(--sh);margin-bottom:12px;}
+
+/* insight */
+.insight{border-radius:10px;padding:12px 16px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start;}
+.insight.info{background:var(--dku-lt);border:1px solid #93c5fd;}
+.insight.ok  {background:var(--ok-lt); border:1px solid #86efac;}
+.insight.warn{background:var(--warn-lt);border:1px solid #fca5a5;}
+.insight.tip {background:#faf5ff;      border:1px solid #c4b5fd;}
+.insight-ico{font-size:16px;flex-shrink:0;margin-top:2px;}
+.insight-title{font-size:13px;font-weight:700;margin-bottom:2px;}
+.insight.info .insight-title{color:var(--dku);}
+.insight.ok   .insight-title{color:var(--ok);}
+.insight.warn .insight-title{color:var(--warn);}
+.insight.tip  .insight-title{color:var(--strat);}
+.insight-text{font-size:12.5px;color:#374151;line-height:1.65;}
+
+/* 연세대 vs 단국대 비교 */
+.compare-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.cmp-card{border-radius:10px;padding:16px 18px;}
+.cmp-yonsei{background:var(--yonsei-lt);border:1.5px solid var(--yonsei-bd);}
+.cmp-dku   {background:var(--dku-lt);   border:1.5px solid #93c5fd;}
+.cmp-title{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.cmp-yonsei .cmp-title{color:var(--yonsei);}
+.cmp-dku    .cmp-title{color:var(--dku);}
+.team-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;
+  margin-bottom:5px;font-size:12px;}
+.tr-strat{background:var(--strat-lt);border:1px solid var(--strat-bd);}
+.tr-dev  {background:var(--dev-lt);  border:1px solid var(--dev-bd);}
+.tr-ops  {background:var(--ops-lt);  border:1px solid var(--ops-bd);}
+.tr-info {background:#f8fafc;        border:1px solid var(--border);}
+.tr-ai   {background:var(--ai-lt);   border:1px solid var(--ai-bd);}
+.team-name{font-weight:700;flex:1;}
+.team-cnt{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+.team-tasks{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5;}
+.tr-strat .team-name{color:var(--strat);}
+.tr-dev   .team-name{color:var(--dev);}
+.tr-ops   .team-name{color:var(--ops);}
+.tr-ai    .team-name{color:var(--ai);}
+
+/* 제안 조직도 */
+.org-wrap{padding:16px 0;}
+.org-top{display:flex;justify-content:center;margin-bottom:4px;}
+.org-box{border-radius:10px;padding:10px 24px;text-align:center;display:inline-block;}
+.ob-root{background:linear-gradient(135deg,#1e3a8a,#1e40af);color:#fff;
+  border:2px solid var(--dku-md);box-shadow:0 0 20px rgba(59,130,246,.2);}
+.ob-root .ot{font-size:14px;font-weight:800;}
+.ob-root .os{font-size:11px;opacity:.75;margin-top:2px;}
+.connector-v{width:2px;height:18px;background:var(--border2);margin:0 auto;}
+.connector-h-wrap{display:flex;max-width:760px;margin:0 auto;padding:0 60px;}
+.connector-h{height:2px;background:var(--border2);flex:1;margin-top:10px;}
+.branches{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto;}
+.branch{display:flex;flex-direction:column;align-items:center;}
+.branch-vline{width:2px;height:14px;background:var(--border2);}
+.branch-box{border-radius:9px;padding:11px 14px;text-align:center;min-width:160px;max-width:180px;}
+.bb-strat{background:var(--strat-lt);border:2px solid var(--strat-bd);}
+.bb-dev  {background:var(--dev-lt);  border:2px solid var(--dev-bd);}
+.bb-ops  {background:var(--ops-lt);  border:2px solid var(--ops-bd);}
+.bb-ai   {background:var(--ai-lt);   border:2px dashed var(--ai-bd);}
+.bb-strat .bt{color:var(--strat);font-size:13px;font-weight:800;margin-bottom:4px;}
+.bb-dev   .bt{color:var(--dev);  font-size:13px;font-weight:800;margin-bottom:4px;}
+.bb-ops   .bt{color:var(--ops);  font-size:13px;font-weight:800;margin-bottom:4px;}
+.bb-ai    .bt{color:var(--ai);   font-size:13px;font-weight:800;margin-bottom:4px;}
+.bb-cnt{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  padding:1px 7px;border-radius:5px;display:inline-block;margin-bottom:4px;}
+.bb-strat .bb-cnt{background:var(--strat);color:#fff;}
+.bb-dev   .bb-cnt{background:var(--dev);  color:#fff;}
+.bb-ops   .bb-cnt{background:var(--ops);  color:#fff;}
+.bb-ai    .bb-cnt{background:var(--ai);   color:#fff;}
+.bb-tasks{font-size:10.5px;color:#374151;line-height:1.6;}
+
+/* 업무 배분표 */
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+.tbl th{background:#f1f5f9;padding:8px 12px;text-align:left;font-weight:700;
+  color:var(--muted);font-size:11px;letter-spacing:.3px;border-bottom:2px solid var(--border);}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.chip{display:inline-block;padding:2px 7px;border-radius:8px;font-size:11px;font-weight:600;}
+.c-strat{background:var(--strat-lt);color:var(--strat);}
+.c-dev  {background:var(--dev-lt);  color:var(--dev);}
+.c-ops  {background:var(--ops-lt);  color:var(--ops);}
+.c-ai   {background:var(--ai-lt);   color:var(--ai);}
+.c-ok   {background:var(--ok-lt);   color:var(--ok);}
+.c-warn {background:var(--warn-lt); color:var(--warn);}
+.c-both {background:#f5f3ff;color:#5b21b6;}
+
+/* 단계 */
+.step-list{display:flex;flex-direction:column;gap:10px;}
+.step-item{background:var(--white);border:1px solid var(--border);border-radius:10px;
+  padding:14px 18px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--sh);}
+.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;color:#fff;}
+.s1{background:var(--strat);}.s2{background:var(--dev);}.s3{background:var(--ops);}.s4{background:var(--ai);}
+.step-title{font-size:13px;font-weight:700;margin-bottom:3px;}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.65;}
+.step-tags{margin-top:5px;display:flex;gap:5px;flex-wrap:wrap;}
+
+.note{margin-top:24px;padding:14px 18px;background:#f8fafc;border:1px solid var(--border);
+  border-radius:10px;font-size:11.5px;color:var(--muted);line-height:1.8;}
+
+@media(max-width:680px){
+  .page{padding:16px 14px 60px;}
+  .cover{padding:24px 20px;}
+  .cover h1{font-size:19px;}
+  .compare-wrap{grid-template-columns:1fr;}
+  .branches{gap:8px;}
+  .branch-box{min-width:130px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- 커버 -->
+<div class="cover">
+  <div class="cover-badge">연세대 벤치마킹 · 2026</div>
+  <h1>단국대 정보기획팀 — 전략·개발·운영 파트 분리 방안</h1>
+  <div class="sub">연세대 정보통신처 5팀 구조 → 단국대 11명 적용 로드맵</div>
+  <div class="cover-stats">
+    <div class="cs"><div class="n">11</div><div class="l">현재 인원</div></div>
+    <div class="cs"><div class="n">3</div><div class="l">제안 파트</div></div>
+    <div class="cs"><div class="n">연세대</div><div class="l">벤치마킹</div></div>
+    <div class="cs"><div class="n">29</div><div class="l">연세대 인원</div></div>
+  </div>
+</div>
+
+<!-- 01 연세대 vs 단국대 비교 -->
+<div class="sec">
+  <div class="sec-title">01 · 연세대 vs 단국대 구조 비교</div>
+
+  <div class="compare-wrap">
+    <!-- 연세대 -->
+    <div class="cmp-card cmp-yonsei">
+      <div class="cmp-title">🏫 연세대 정보통신처 (29명 · 5팀)</div>
+
+      <div class="team-row tr-strat">
+        <div>
+          <div class="team-name">정보전략팀 <span class="team-cnt">4명</span></div>
+          <div class="team-tasks">중장기 IT전략·거버넌스·IT컨설팅<br>홈페이지·HelpDesk·소프트웨어 관리</div>
+        </div>
+      </div>
+      <div class="team-row tr-dev" style="margin-top:4px;">
+        <div>
+          <div class="team-name">학사정보팀 <span class="team-cnt">10명</span></div>
+          <div class="team-tasks">학사시스템 전체·LMS·SSO·포털</div>
+        </div>
+      </div>
+      <div class="team-row tr-ops" style="margin-top:4px;">
+        <div>
+          <div class="team-name">연구행정정보팀 <span class="team-cnt">6명</span></div>
+          <div class="team-tasks">ERP(인사·재무·구매)·연구정보·그룹웨어</div>
+        </div>
+      </div>
+      <div class="team-row tr-info" style="margin-top:4px;">
+        <div>
+          <div class="team-name" style="color:var(--muted);">정보운영팀 <span class="team-cnt">5명</span></div>
+          <div class="team-tasks">서버·네트워크·통신운영실·메일</div>
+        </div>
+      </div>
+      <div class="team-row tr-info" style="margin-top:4px;">
+        <div>
+          <div class="team-name" style="color:var(--muted);">정보보호팀 <span class="team-cnt">4명</span></div>
+          <div class="team-tasks">보안정책·DBMS·침해대응·보안관제</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 단국대 현재 -->
+    <div class="cmp-card cmp-dku">
+      <div class="cmp-title">🏫 단국대 정보기획팀 (11명 · 1팀)</div>
+
+      <div class="team-row tr-info">
+        <div>
+          <div class="team-name" style="color:var(--dku);">총괄 <span class="team-cnt">1명</span></div>
+          <div class="team-tasks">팀 전체 운영 · 기획 겸직(비공식)</div>
+        </div>
+      </div>
+      <div class="team-row tr-info" style="margin-top:4px;border-color:#fca5a5;background:#fff1f2;">
+        <div>
+          <div class="team-name" style="color:var(--warn);">기획 <span class="team-cnt" style="color:#fca5a5;">0명 ⚠️</span></div>
+          <div class="team-tasks" style="color:#f87171;">공식 기획 담당자 없음</div>
+        </div>
+      </div>
+      <div class="team-row tr-ops" style="margin-top:4px;">
+        <div>
+          <div class="team-name">학사 <span class="team-cnt">4명</span></div>
+          <div class="team-tasks">학사·수강·포털·모바일·LMS 연계</div>
+        </div>
+      </div>
+      <div class="team-row tr-ops" style="margin-top:4px;">
+        <div>
+          <div class="team-name">행정 <span class="team-cnt">2명</span></div>
+          <div class="team-tasks">행정정보시스템·전자결재·입학</div>
+        </div>
+      </div>
+      <div class="team-row tr-ops" style="margin-top:4px;">
+        <div>
+          <div class="team-name">연구 <span class="team-cnt">2명</span></div>
+          <div class="team-tasks">연구정보시스템·DBA</div>
+        </div>
+      </div>
+      <div class="team-row tr-info" style="margin-top:4px;">
+        <div>
+          <div class="team-name" style="color:var(--muted);">공통 <span class="team-cnt">2명</span></div>
+          <div class="team-tasks">포털·그룹웨어·공용SW·헬프데스크</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight warn">
+    <div class="insight-ico">⚠️</div>
+    <div>
+      <div class="insight-title">핵심 차이 — 연세대는 "전략"이 독립, 단국대는 "운영"만 존재</div>
+      <div class="insight-text">연세대는 <strong>정보전략팀 4명</strong>이 중장기 계획·IT거버넌스·컨설팅을 전담합니다. 단국대는 11명 전원이 시스템 운영·개발 위주로, 전략·기획 기능이 공식적으로 없습니다. 연세대의 학사정보팀(10명)·연구행정팀(6명) 분리 구조는 인원이 충분할 때 가능한 방식이고, 단국대 11명에 그대로 적용하기는 어렵습니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 제안 조직도 -->
+<div class="sec">
+  <div class="sec-title">02 · 단국대 11명 적용 제안 — 3파트 + AI</div>
+
+  <div class="insight info">
+    <div class="insight-ico">💡</div>
+    <div>
+      <div class="insight-title">설계 원칙 — 연세대처럼 "팀 분리"가 아닌 "파트 역할 지정"</div>
+      <div class="insight-text">연세대는 29명이라 팀을 5개로 분리할 수 있습니다. 단국대 11명은 <strong>팀을 나누기보다 팀 내 파트(담당 구역)를 지정</strong>하는 방식이 현실적입니다. 연세대 정보전략팀의 역할을 팀장이 흡수하고, 학사/행정·연구를 묶어 개발·운영 파트로 구성하면 비슷한 효과를 낼 수 있습니다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="org-wrap">
+      <div class="org-top">
+        <div class="org-box ob-root">
+          <div class="ot">정보기획팀장 (총괄 1명)</div>
+          <div class="os">전략·기획 파트 직접 수행 · 연세대 정보전략팀 역할</div>
+        </div>
+      </div>
+      <div class="connector-v"></div>
+      <div class="connector-h-wrap">
+        <div class="connector-h"></div>
+        <div class="connector-h"></div>
+        <div class="connector-h"></div>
+      </div>
+      <div class="branches">
+        <div class="branch">
+          <div class="branch-vline"></div>
+          <div class="branch-box bb-strat">
+            <div class="bt">📋 전략·기획 파트</div>
+            <div class="bb-cnt">1명 (팀장)</div>
+            <div class="bb-tasks">
+              중장기 정보화 계획<br>
+              IT거버넌스·예산기획<br>
+              정보화위원회 운영<br>
+              타부서 IT컨설팅<br>
+              AI·DX 도입 전략
+            </div>
+          </div>
+        </div>
+        <div class="branch">
+          <div class="branch-vline"></div>
+          <div class="branch-box bb-dev">
+            <div class="bt">⚙️ 시스템 개발 파트</div>
+            <div class="bb-cnt">4명 (학사)</div>
+            <div class="bb-tasks">
+              학사시스템 개발·운영<br>
+              수강신청·성적·졸업<br>
+              LMS·포털·SSO<br>
+              모바일 앱 고도화<br>
+              API 연계 관리
+            </div>
+          </div>
+        </div>
+        <div class="branch">
+          <div class="branch-vline"></div>
+          <div class="branch-box bb-ops">
+            <div class="bt">📁 운영·지원 파트</div>
+            <div class="bb-cnt">4명 (행정2+연구2)</div>
+            <div class="bb-tasks">
+              ERP 행정·연구시스템<br>
+              전자결재·그룹웨어<br>
+              입학·DBA<br>
+              포털·공용SW·헬프데스크<br>
+              <span style="opacity:.6;">(공통 2명 포함 시 6명)</span>
+            </div>
+          </div>
+        </div>
+        <div class="branch">
+          <div class="branch-vline"></div>
+          <div class="branch-box bb-ai">
+            <div class="bt">✦ AI·데이터 파트</div>
+            <div class="bb-cnt">겸직→중기 1명</div>
+            <div class="bb-tasks">
+              AI 서비스 기획·도입<br>
+              데이터기반 행정 플랫폼<br>
+              고려대·인하대 모델 참고<br>
+              <em style="opacity:.6;">중기 전담 확보 목표</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 연세대 → 단국대 업무 매핑 -->
+<div class="sec">
+  <div class="sec-title">03 · 연세대 업무 → 단국대 파트 매핑</div>
+  <div class="card">
+    <table class="tbl">
+      <thead>
+        <tr><th>연세대 팀</th><th>연세대 주요 업무</th><th>단국대 파트</th><th>담당</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="chip c-strat">정보전략팀</span></td>
+          <td>중장기 IT전략·거버넌스·컨설팅</td>
+          <td><span class="chip c-strat">전략·기획 파트</span></td>
+          <td>팀장 겸직</td>
+        </tr>
+        <tr>
+          <td><span class="chip c-strat">정보전략팀</span></td>
+          <td>홈페이지·HelpDesk·공용SW·메일</td>
+          <td><span class="chip c-ops">운영·지원 파트</span></td>
+          <td>공통 2명</td>
+        </tr>
+        <tr>
+          <td><span class="chip c-dev">학사정보팀</span></td>
+          <td>학사시스템·LMS·SSO·포털</td>
+          <td><span class="chip c-dev">시스템 개발 파트</span></td>
+          <td>학사 4명</td>
+        </tr>
+        <tr>
+          <td><span class="chip c-ops">연구행정정보팀</span></td>
+          <td>ERP·연구정보·그룹웨어·DBA</td>
+          <td><span class="chip c-ops">운영·지원 파트</span></td>
+          <td>행정2+연구2</td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);">정보운영팀</td>
+          <td style="color:var(--muted);">서버·네트워크·통신</td>
+          <td style="color:var(--muted);">인프라팀 담당</td>
+          <td style="color:var(--muted);">별도팀</td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);">정보보호팀</td>
+          <td style="color:var(--muted);">보안·DBMS·침해대응</td>
+          <td style="color:var(--muted);">인프라팀 담당</td>
+          <td style="color:var(--muted);">별도팀</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 04 단계별 실행 방안 -->
+<div class="sec">
+  <div class="sec-title">04 · 단계별 실행 방안</div>
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num s1">1</div>
+      <div>
+        <div class="step-title">파트 명칭·역할 공식 지정 — 업무분장서 작성 (1개월)</div>
+        <div class="step-desc">팀 내 3개 파트(전략·기획 / 시스템 개발 / 운영·지원)를 문서화합니다. 별도 팀 신설이 아니라 <strong>업무분장서에 파트 구분과 주담당 시스템을 명시</strong>하는 것으로 즉시 시작할 수 있습니다. 연세대 정보전략팀의 업무 목록을 참고해 팀장 기획 업무 목록을 먼저 작성하세요.</div>
+        <div class="step-tags"><span class="chip c-strat">전략·기획</span><span class="chip c-ok">즉시 실행</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num s2">2</div>
+      <div>
+        <div class="step-title">시스템 개발 파트 — 학사 4명 주담당 시스템 분리 (1~2개월)</div>
+        <div class="step-desc">현재 학사 4명이 각각 어떤 시스템을 맡는지 공식 문서가 없을 가능성이 높습니다. 연세대처럼 <strong>학사공통·수강·성적 / LMS·포털·모바일 / 증명·졸업·DBA</strong> 등으로 주담당을 배분하고 문서화합니다. 1명이 자리를 비워도 업무가 멈추지 않는 체계를 만드는 것이 목표입니다.</div>
+        <div class="step-tags"><span class="chip c-dev">시스템 개발</span><span class="chip c-ok">인원 증원 불필요</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num s3">3</div>
+      <div>
+        <div class="step-title">운영·지원 파트 — 행정2+연구2+공통2 통합 운영 (2~3개월)</div>
+        <div class="step-desc">연세대 연구행정정보팀(6명)에 해당하는 구조입니다. 행정·연구·공통 6명을 <strong>운영·지원 파트로 통합</strong>하고, 그 안에서 ERP / 연구정보 / 포털·공용서비스로 주담당을 나눕니다. DBA 역할도 이 파트에서 공식 지정합니다.</div>
+        <div class="step-tags"><span class="chip c-ops">운영·지원</span><span class="chip c-both">행정+연구+공통 통합</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num s4">4</div>
+      <div>
+        <div class="step-title">AI·데이터 파트 — 중기 전담 인력 1명 확보 (2~3년)</div>
+        <div class="step-desc">연세대는 아직 AI 전담팀이 없지만, 고려대·인하대·세종대는 이미 AI·데이터 역할을 신설했습니다. 단기적으로는 전략·기획 파트(팀장)가 AI 도입 전략을 겸직하고, 중기 인력 계획에 <strong>AI·데이터 전담 1명 채용</strong>을 반영합니다. 단국대 CQI·고등교육통계 자동화부터 시작하면 효과가 빠릅니다.</div>
+        <div class="step-tags"><span class="chip c-ai">AI·데이터</span><span class="chip" style="background:#f5f3ff;color:#5b21b6;">중기 계획</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 요약 -->
+<div class="sec">
+  <div class="sec-title">05 · 한눈에 보기 — 연세대와 단국대 비교</div>
+  <div class="card">
+    <table class="tbl">
+      <thead><tr><th>구분</th><th>연세대</th><th>단국대 (현재)</th><th>단국대 (제안)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>전략·기획</strong></td>
+          <td>정보전략팀 4명 독립</td>
+          <td><span class="chip c-warn">없음</span></td>
+          <td>팀장 겸직 공식화</td>
+        </tr>
+        <tr>
+          <td><strong>시스템 개발</strong></td>
+          <td>학사정보팀 10명</td>
+          <td>학사 4명 (역할 불명확)</td>
+          <td>개발 파트 4명 + 주담당 지정</td>
+        </tr>
+        <tr>
+          <td><strong>행정·연구 운영</strong></td>
+          <td>연구행정정보팀 6명</td>
+          <td>행정2 + 연구2 분리</td>
+          <td>운영·지원 파트 6명 통합</td>
+        </tr>
+        <tr>
+          <td><strong>공통·포털</strong></td>
+          <td>정보전략팀 내 포함</td>
+          <td>공통 2명 (역할 불명확)</td>
+          <td>운영·지원 파트에 통합</td>
+        </tr>
+        <tr>
+          <td><strong>인프라·보안</strong></td>
+          <td>정보운영팀 + 정보보호팀</td>
+          <td>인프라1·2팀 별도</td>
+          <td>인프라1·2팀 유지</td>
+        </tr>
+        <tr>
+          <td><strong>AI·데이터</strong></td>
+          <td><span class="chip c-warn">없음</span></td>
+          <td><span class="chip c-warn">없음</span></td>
+          <td>겸직 → 중기 전담 1명</td>
+        </tr>
+        <tr>
+          <td><strong>총 인원</strong></td>
+          <td>29명</td>
+          <td>11명</td>
+          <td>11명 (증원 불필요)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="note">
+  <strong style="color:var(--text);">분석 기준 안내</strong><br>
+  · 연세대 업무항목은 2026년 타대학 전산팀 운영현황 수집 데이터 기반입니다.<br>
+  · 제안 파트 구분은 정식 팀 신설이 아닌 업무분장서 내 역할 구분(Role Definition) 수준입니다.<br>
+  · 공통 2명의 배치는 실제 업무 현황에 따라 개발 파트 또는 운영·지원 파트로 조정 가능합니다.
+</div>
+
+</div>
+</body>
+</html>
